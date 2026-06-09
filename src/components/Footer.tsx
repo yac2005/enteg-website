@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="bg-brand-brown text-white py-10 mt-auto">
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-	<Image src="/logo.png" alt="ENTEG Voyages" width={50} height={38} />
+	<Image src="/logo.jpg" alt="ENTEG Voyages" width={70} height={52} />
           <p className="text-sm opacity-75">Agence de Voyage — Ghardaia, Algeria</p>
         </div>
         <div>
