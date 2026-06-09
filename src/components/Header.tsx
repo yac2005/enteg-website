@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+
 
 const links = [
   { href: "/", label: "Home" },
@@ -19,9 +21,9 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* Logo */}
-        <Link href="/" className="font-bold text-brand-brown text-xl">
-          ENTEG
-        </Link>
+	<Link href="/">
+	  <Image src="/logo.jpg" alt="ENTEG Voyages" width={80} height={60} priority />
+	</Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex gap-6 text-sm font-medium text-brand-text">
