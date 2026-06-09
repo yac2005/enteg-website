@@ -22,7 +22,7 @@ export default function Header() {
 
         {/* Logo */}
 	<Link href="/">
-	<Image src="/logo.jpg" alt="ENTEG Voyages" width={60} height={45} priority />
+	<Image src="/logo.png" alt="ENTEG Voyages" width={60} height={45} priority />
 	</Link>
 
         {/* Desktop nav */}
