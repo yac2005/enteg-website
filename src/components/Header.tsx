@@ -14,7 +14,7 @@ export default function Header() {
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.jpg" alt="ENTEG Voyages" width={45} height={35} priority />
+          <Image src="/logo.png" alt="ENTEG Voyages" width={45} height={35} priority />
         </Link>
 
         {/* Desktop nav */}
@@ -27,7 +27,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a href="https://wa.me/213XXXXXXXXX" className="bg-green-600 text-white text-sm px-4 py-2 rounded-full hidden md:inline-block">WhatsApp</a>
+          <a href="https://wa.me/213 771 50 43 01" className="bg-green-600 text-white text-sm px-4 py-2 rounded-full hidden md:inline-block">WhatsApp</a>
           {/* Mobile hamburger */}
           <button className="md:hidden text-brand-text" onClick={() => setOpen(!open)}>
             {open ? "✕" : "☰"}
@@ -43,7 +43,7 @@ export default function Header() {
           <Link href="/hotels" onClick={() => setOpen(false)}>Hotels</Link>
           <Link href="/about" onClick={() => setOpen(false)}>About</Link>
           <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
-          <a href="https://wa.me/213XXXXXXXXX" className="bg-green-600 text-white text-sm px-4 py-2 rounded-full text-center">WhatsApp</a>
+          <a href="https://wa.me/213 771 50 43 01" className="bg-green-600 text-white text-sm px-4 py-2 rounded-full text-center">WhatsApp</a>
         </div>
       )}
     </header>
