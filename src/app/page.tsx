@@ -1,23 +1,20 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import InquiryModal from "@/components/InquiryModal";
-
-const featuredTours = [
-  { id: 1, name: "Sahara Desert Trek", duration: "3 days", price: "From 15,000 DZD" },
-  { id: 2, name: "Ghardaïa Old City", duration: "1 day", price: "From 5,000 DZD" },
-  { id: 3, name: "M'Zab Valley", duration: "2 days", price: "From 9,000 DZD" },
-];
-
-const featuredHotels = [
-  { id: 1, name: "Hotel El Djanoub", location: "Ghardaïa", stars: 4 },
-  { id: 2, name: "Auberge Taghit", location: "Taghit", stars: 3 },
-  { id: 3, name: "Hotel Rostémides", location: "Ghardaïa", stars: 4 },
-];
+import { getFeaturedTours, getFeaturedHotels, Tour, Hotel } from "@/lib/data";
 
 export default function Home() {
   const [modal, setModal] = useState<string | null>(null);
+  const [featuredTours, setFeaturedTours] = useState<Tour[]>([]);
+  const [featuredHotels, setFeaturedHotels] = useState<Hotel[]>([]);
+
+  useEffect(() => {
+    getFeaturedTours().then(setFeaturedTours);
+    getFeaturedHotels().then(setFeaturedHotels);
+  }, []);
 
   return (
     <main>
@@ -33,7 +30,7 @@ export default function Home() {
             Where the Sahara<br />Tells Its Story
           </h1>
           <p className="text-lg md:text-xl opacity-90 mb-10 max-w-xl mx-auto leading-relaxed">
-            Authentic desert experiences crafted by locals who know every dune, every ksar, every hidden oasis.
+            Authentic desert experiences crafted by locals who know every dune
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/tours" className="bg-white text-brand-brown px-8 py-3 rounded-full font-semibold hover:bg-brand-beige transition shadow-lg">
@@ -63,22 +60,38 @@ export default function Home() {
           <p className="text-center text-brand-secondary text-sm uppercase tracking-widest mb-2">Handpicked for you</p>
           <h2 className="font-heading text-3xl font-bold text-brand-brown mb-10 text-center">Featured Tours</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredTours.map((tour) => (
-              <div key={tour.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform">
-                <div className="h-48 bg-brand-secondary/20 flex items-center justify-center text-4xl">🏜️</div>
-                <div className="p-5">
-                  <span className="text-xs bg-brand-beige text-brand-brown px-2 py-1 rounded-full">{tour.duration}</span>
-                  <h3 className="font-heading font-bold text-brand-text text-lg mt-2 mb-1">{tour.name}</h3>
-                  <p className="text-brand-secondary text-sm mb-4">{tour.price}</p>
-                  <button onClick={() => setModal(`Inquiry — ${tour.name}`)} className="w-full bg-brand-brown text-white py-2 rounded-full text-sm font-medium hover:opacity-90 transition">
-                    Inquire
-                  </button>
-                </div>
-              </div>
-            ))}
+            {featuredTours.length === 0
+              ? [...Array(3)].map((_, i) => (
+                  <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm animate-pulse">
+                    <div className="h-48 bg-brand-secondary opacity-20" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-3 bg-gray-200 rounded w-1/3" />
+                      <div className="h-5 bg-gray-200 rounded w-2/3" />
+                      <div className="h-3 bg-gray-200 rounded w-1/2" />
+                    </div>
+                  </div>
+                ))
+              : featuredTours.map((tour) => (
+                  <div key={tour.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform">
+                    <div className="relative h-48">
+                      <Image src={tour.image} alt={tour.name} fill className="object-cover" />
+                    </div>
+                    <div className="p-5">
+                      <span className="text-xs bg-brand-beige text-brand-brown px-2 py-1 rounded-full">{tour.duration}</span>
+                      <h3 className="font-heading font-bold text-brand-text text-lg mt-2 mb-1">{tour.name}</h3>
+                      <p className="text-brand-secondary text-sm mb-4">From {tour.price.toLocaleString()} DZD</p>
+                      <button
+                        onClick={() => setModal(`Inquiry — ${tour.name}`)}
+                        className="w-full bg-brand-brown text-white py-2 rounded-full text-sm font-medium"
+                      >
+                        Inquire
+                      </button>
+                    </div>
+                  </div>
+                ))}
           </div>
           <div className="text-center mt-8">
-            <Link href="/tours" className="border-2 border-brand-brown text-brand-brown px-8 py-3 rounded-full font-medium hover:bg-brand-brown hover:text-white transition text-sm">
+            <Link href="/tours" className="border-2 border-brand-brown text-brand-brown px-8 py-3 rounded-full font-medium text-sm">
               View All Tours →
             </Link>
           </div>
@@ -88,25 +101,41 @@ export default function Home() {
       {/* Featured Hotels */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <p className="text-center text-brand-secondary text-sm uppercase tracking-widest mb-2">Where you'll rest</p>
+          <p className="text-center text-brand-secondary text-sm uppercase tracking-widest mb-2">Where you will rest</p>
           <h2 className="font-heading text-3xl font-bold text-brand-brown mb-10 text-center">Featured Hotels</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredHotels.map((hotel) => (
-              <div key={hotel.id} className="bg-brand-beige rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform">
-                <div className="h-48 bg-brand-secondary/20 flex items-center justify-center text-4xl">🏨</div>
-                <div className="p-5">
-                  <p className="text-xs text-brand-secondary mb-1">{hotel.location}</p>
-                  <h3 className="font-heading font-bold text-brand-text text-lg mb-1">{hotel.name}</h3>
-                  <p className="text-yellow-500 text-sm mb-4">{"★".repeat(hotel.stars)}</p>
-                  <button onClick={() => setModal(`Inquiry — ${hotel.name}`)} className="w-full bg-brand-brown text-white py-2 rounded-full text-sm font-medium hover:opacity-90 transition">
-                    Inquire
-                  </button>
-                </div>
-              </div>
-            ))}
+            {featuredHotels.length === 0
+              ? [...Array(3)].map((_, i) => (
+                  <div key={i} className="bg-brand-beige rounded-2xl overflow-hidden shadow-sm animate-pulse">
+                    <div className="h-48 bg-brand-secondary opacity-20" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-3 bg-gray-200 rounded w-1/3" />
+                      <div className="h-5 bg-gray-200 rounded w-2/3" />
+                      <div className="h-3 bg-gray-200 rounded w-1/2" />
+                    </div>
+                  </div>
+                ))
+              : featuredHotels.map((hotel) => (
+                  <div key={hotel.id} className="bg-brand-beige rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform">
+                    <div className="relative h-48">
+                      <Image src={hotel.image} alt={hotel.name} fill className="object-cover" />
+                    </div>
+                    <div className="p-5">
+                      <p className="text-xs text-brand-secondary mb-1">{hotel.location}</p>
+                      <h3 className="font-heading font-bold text-brand-text text-lg mb-1">{hotel.name}</h3>
+                      <p className="text-yellow-500 text-sm mb-4">{"★".repeat(hotel.rating)}</p>
+                      <button
+                        onClick={() => setModal(`Inquiry — ${hotel.name}`)}
+                        className="w-full bg-brand-brown text-white py-2 rounded-full text-sm font-medium"
+                      >
+                        Inquire
+                      </button>
+                    </div>
+                  </div>
+                ))}
           </div>
           <div className="text-center mt-8">
-            <Link href="/hotels" className="border-2 border-brand-brown text-brand-brown px-8 py-3 rounded-full font-medium hover:bg-brand-brown hover:text-white transition text-sm">
+            <Link href="/hotels" className="border-2 border-brand-brown text-brand-brown px-8 py-3 rounded-full font-medium text-sm">
               View All Hotels →
             </Link>
           </div>
@@ -118,11 +147,11 @@ export default function Home() {
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-10 items-center">
           <div className="flex-1">
             <p className="text-brand-secondary text-sm uppercase tracking-widest mb-2">Who we are</p>
-            <h2 className="font-heading text-3xl font-bold text-brand-brown mb-4">Born in the Desert,<br />Built for Travellers</h2>
+            <h2 className="font-heading text-3xl font-bold text-brand-brown mb-4">Born in the Desert</h2>
             <p className="text-brand-text opacity-75 leading-relaxed mb-6">
-              ENTEG Voyages is a licensed Algerian travel agency based in Ghardaïa. We've been guiding travellers through the M'Zab Valley, the Sahara, and beyond for over a decade — with deep local knowledge no guidebook can match.
+              ENTEG Voyages is a licensed Algerian travel agency based in Ghardaïa. We have been guiding travellers through the M'Zab Valley and the Sahara for over a decade.
             </p>
-            <Link href="/about" className="text-brand-brown font-semibold text-sm border-b-2 border-brand-brown pb-0.5 hover:opacity-70 transition">
+            <Link href="/about" className="text-brand-brown font-semibold text-sm border-b-2 border-brand-brown pb-0.5">
               Our Story →
             </Link>
           </div>
@@ -136,16 +165,17 @@ export default function Home() {
       {/* CTA Strip */}
       <section className="bg-brand-brown py-14 px-4 text-center text-white">
         <h2 className="font-heading text-3xl font-bold mb-3">Ready to explore Algeria?</h2>
-        <p className="opacity-75 mb-8 text-sm">Contact us today — we'll build your perfect trip.</p>
+        <p className="opacity-75 mb-8 text-sm">Contact us today — we will build your perfect trip.</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="tel:+2130771504301" className="border-2 border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white hover:text-brand-brown transition">
+          <a href="tel:+2130771504301" className="border-2 border-white text-white px-8 py-3 rounded-full font-medium">
             Call Us
           </a>
-          <a href="https://wa.me/2130771504301" className="bg-green-600 text-white px-8 py-3 rounded-full font-medium hover:opacity-90 transition">
+          <a href="https://wa.me/2130771504301" className="bg-green-600 text-white px-8 py-3 rounded-full font-medium">
             WhatsApp
           </a>
         </div>
       </section>
+
     </main>
   );
 }
