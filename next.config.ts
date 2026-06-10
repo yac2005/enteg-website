@@ -1,9 +1,11 @@
 export default {
   images: {
     formats: ["image/avif", "image/webp"],
-    domains: ["images.unsplash.com"],
-  },
-  experimental: {
-    optimizeCss: true,
+    remotePatterns: [
+      { hostname: "images.unsplash.com" },
+      { hostname: "encrypted-tbn0.gstatic.com" },
+      { hostname: "*.googleusercontent.com" },
+      { hostname: "*.gstatic.com" },
+    ],
   },
 };
