@@ -1,20 +1,70 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import InquiryModal from "@/components/InquiryModal";
 import { getFeaturedTours, getFeaturedHotels, Tour, Hotel } from "@/lib/data";
+import { collection, getCountFromServer } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
+// ── OUTSIDE the component ──────────────────────────────
+function useCountUp(target: number, duration = 1500, start = false) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!start || target === 0) return;
+    let startTime: number;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      setCount(Math.floor(progress * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [start, target, duration]);
+  return count;
+}
+
+// ── COMPONENT ──────────────────────────────────────────
 export default function Home() {
+  const [stats, setStats] = useState({ tours: "0", hotels: "0" });
   const [modal, setModal] = useState<string | null>(null);
   const [featuredTours, setFeaturedTours] = useState<Tour[]>([]);
   const [featuredHotels, setFeaturedHotels] = useState<Hotel[]>([]);
+  const [loading, setLoading] = useState(true);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const [statsVisible, setStatsVisible] = useState(false);
 
+  // useEffect 1 — fetch data
   useEffect(() => {
-    getFeaturedTours().then(setFeaturedTours);
-    getFeaturedHotels().then(setFeaturedHotels);
+    Promise.all([
+      getFeaturedTours().then(setFeaturedTours),
+      getFeaturedHotels().then(setFeaturedHotels),
+      getCountFromServer(collection(db, "tours")).then((snap) =>
+        setStats((prev) => ({ ...prev, tours: `${snap.data().count}` }))
+      ),
+      getCountFromServer(collection(db, "hotels")).then((snap) =>
+        setStats((prev) => ({ ...prev, hotels: `${snap.data().count}` }))
+      ),
+    ])
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
+
+  // useEffect 2 — intersection observer
+  useEffect(() => {
+    if (loading) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setStatsVisible(true); },
+      { threshold: 0.1 }
+    );
+    if (statsRef.current) observer.observe(statsRef.current);
+    return () => observer.disconnect();
+  }, [loading]);
+
+  const toursCount = useCountUp(Number(stats.tours) || 0, 1500, statsVisible);
+  const hotelsCount = useCountUp(Number(stats.hotels) || 0, 1500, statsVisible);
+  const yearsCount = useCountUp(10, 1500, statsVisible);
 
   return (
     <main>
@@ -46,10 +96,10 @@ export default function Home() {
 
       {/* Stats bar */}
       <section className="bg-brand-brown text-white py-6 px-4">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div><p className="text-2xl font-bold font-heading">9+</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Tours</p></div>
-          <div><p className="text-2xl font-bold font-heading">5+</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Hotels</p></div>
-          <div><p className="text-2xl font-bold font-heading">10+</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Years Experience</p></div>
+        <div ref={statsRef} className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div><p className="text-2xl font-bold font-heading">{toursCount}+</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Tours</p></div>
+          <div><p className="text-2xl font-bold font-heading">{hotelsCount}+</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Hotels</p></div>
+          <div><p className="text-2xl font-bold font-heading">{yearsCount}+</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Years Experience</p></div>
           <div><p className="text-2xl font-bold font-heading">100%</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Algerian</p></div>
         </div>
       </section>
