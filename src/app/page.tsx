@@ -72,23 +72,29 @@ export default function Home() {
                   </div>
                 ))
               : featuredTours.map((tour) => (
-                  <div key={tour.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform">
-                    <div className="relative h-48">
-                      <Image src={tour.image} alt={tour.name} fill className="object-cover" />
-                    </div>
-                    <div className="p-5">
-                      <span className="text-xs bg-brand-beige text-brand-brown px-2 py-1 rounded-full">{tour.duration}</span>
-                      <h3 className="font-heading font-bold text-brand-text text-lg mt-2 mb-1">{tour.name}</h3>
-                      <p className="text-brand-secondary text-sm mb-4">From {tour.price.toLocaleString()} DZD</p>
-                      <button
-                        onClick={() => setModal(`Inquiry — ${tour.name}`)}
-                        className="w-full bg-brand-brown text-white py-2 rounded-full text-sm font-medium"
-                      >
-                        Inquire
-                      </button>
-                    </div>
-                  </div>
-                ))}
+			  <Link key={tour.id} href={`/tours/${tour.id}`} className="block">
+			    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform cursor-pointer">
+			      <div className="relative h-48">
+				{tour.image ? (
+				  <Image src={tour.image} alt={tour.name} fill className="object-cover" />
+				) : (
+				  <div className="w-full h-full bg-brand-beige flex items-center justify-center text-4xl">🏜️</div>
+        )}
+      </div>
+      <div className="p-5">
+        <span className="text-xs bg-brand-beige text-brand-brown px-2 py-1 rounded-full">{tour.duration}</span>
+        <h3 className="font-heading font-bold text-brand-text text-lg mt-2 mb-1">{tour.name}</h3>
+        <p className="text-brand-secondary text-sm mb-4">From {tour.price.toLocaleString()} DZD</p>
+        <button
+          onClick={(e) => { e.preventDefault(); setModal(`Inquiry — ${tour.name}`); }}
+          className="w-full bg-brand-brown text-white py-2 rounded-full text-sm font-medium"
+        >
+          Inquire
+        </button>
+      </div>
+    </div>
+  </Link>
+))}
           </div>
           <div className="text-center mt-8">
             <Link href="/tours" className="border-2 border-brand-brown text-brand-brown px-8 py-3 rounded-full font-medium text-sm">
@@ -115,24 +121,30 @@ export default function Home() {
                     </div>
                   </div>
                 ))
-              : featuredHotels.map((hotel) => (
-                  <div key={hotel.id} className="bg-brand-beige rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform">
-                    <div className="relative h-48">
-                      <Image src={hotel.image} alt={hotel.name} fill className="object-cover" />
-                    </div>
-                    <div className="p-5">
-                      <p className="text-xs text-brand-secondary mb-1">{hotel.location}</p>
-                      <h3 className="font-heading font-bold text-brand-text text-lg mb-1">{hotel.name}</h3>
-                      <p className="text-yellow-500 text-sm mb-4">{"★".repeat(hotel.rating)}</p>
-                      <button
-                        onClick={() => setModal(`Inquiry — ${hotel.name}`)}
-                        className="w-full bg-brand-brown text-white py-2 rounded-full text-sm font-medium"
-                      >
-                        Inquire
-                      </button>
-                    </div>
-                  </div>
-                ))}
+	: featuredHotels.map((hotel) => (
+	  <Link key={hotel.id} href={`/hotels/${hotel.id}`} className="block">
+	    <div className="bg-brand-beige rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform cursor-pointer">
+	      <div className="relative h-48">
+		{hotel.image ? (
+		  <Image src={hotel.image} alt={hotel.name} fill className="object-cover" />
+		) : (
+		  <div className="w-full h-full bg-brand-beige flex items-center justify-center text-4xl">🏨</div>
+		)}
+	      </div>
+	      <div className="p-5">
+		<p className="text-xs text-brand-secondary mb-1">{hotel.location}</p>
+		<h3 className="font-heading font-bold text-brand-text text-lg mb-1">{hotel.name}</h3>
+		<p className="text-yellow-500 text-sm mb-4">{"★".repeat(hotel.rating)}</p>
+		<button
+		  onClick={(e) => { e.preventDefault(); setModal(`Inquiry — ${hotel.name}`); }}
+		  className="w-full bg-brand-brown text-white py-2 rounded-full text-sm font-medium"
+		>
+		  Inquire
+		</button>
+	      </div>
+	    </div>
+	  </Link>
+	))}
           </div>
           <div className="text-center mt-8">
             <Link href="/hotels" className="border-2 border-brand-brown text-brand-brown px-8 py-3 rounded-full font-medium text-sm">
