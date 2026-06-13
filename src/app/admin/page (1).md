@@ -14,6 +14,8 @@
 | region: "Ghardaïa" |
 | image: "" |
 | featured: false |
+| highlights: "" |
+| includes: "" |
 | }; |
 | const emptyHotel = { |
 | name: "" |
@@ -51,10 +53,11 @@
 | await addDoc(collection(db |
 | ...tour |
 | price: Number(tour.price) |
-| createdAt: serverTimestamp() |
-| }); |
-| setTour(emptyTour); |
-| setSuccess("Tour added successfully!"); |
+| highlights: tour.highlights |
+| ? tour.highlights.split("\n").map((s: string) => s.trim()).filter(Boolean) |
+| : [] |
+| includes: tour.includes |
+| ? tour.includes.split(" |
 | setTimeout(() => setSuccess("") |
 | } catch (err) { |
 | console.error(err); |
@@ -138,6 +141,38 @@
 | <div className="bg-white rounded-2xl p-8 shadow-sm"> |
 | <h2 className="text-xl font-bold text-brand-brown mb-6">New Tour</h2> |
 | <form onSubmit={handleTourSubmit} className="space-y-4"> |
+| {/* Highlights */} |
+| <div> |
+| <label className="text-sm font-medium text-brand-brown block mb-1"> |
+| Points forts <span className="text-brand-secondary font-normal">(optionnel)</span> |
+| </label> |
+| <textarea |
+| rows={3} |
+| value={tour.highlights} |
+| onChange={(e) => setTour({ ...tour |
+| className="w-full border border-brand-secondary rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-brown resize-none" |
+| placeholder="Nuit sous les étoiles dans l'erg&#10;Visite des gravures rupestres&#10;Bivouac traditionnel touareg" |
+| /> |
+| <p className="text-xs text-brand-secondary mt-1">Un point fort par ligne</p> |
+| </div> |
+| {/* Includes */} |
+| <div> |
+| <label className="text-sm font-medium text-brand-brown block mb-1"> |
+| Services inclus <span className="text-brand-secondary font-normal">(optionnel)</span> |
+| </label> |
+| <input |
+| type="text" |
+| value={tour.includes} |
+| onChange={(e) => setTour({ ...tour |
+| className="w-full border border-brand-secondary rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-brown" |
+| placeholder="Transport |
+| /> |
+| <p className="text-xs text-brand-secondary mt-1">Séparés par des virgules</p> |
+| </div> |
+|  |
+|  |
+|  |
+|  |
 | <div> |
 | <label className="text-sm font-medium text-brand-brown block mb-1">Tour Name</label> |
 | <input |

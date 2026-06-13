@@ -3,30 +3,31 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Compass,BedDouble, Car, Plane } from "lucide-react";
 
 const SERVICES = [
   {
     label: "Tours",
     description: "Sahara, culture & adventure",
-    icon: "🏜️",
+    icon:<Compass className="w-5 h-5 text-brand-brown" />,
     href: "/tours",
   },
   {
     label: "Accommodation",
     description: "Guesthouse & partner hotels",
-    icon: "🏨",
+    icon: <BedDouble className="w-5 h-5 text-brand-brown" />,
     href: "/hotels",
   },
   {
     label: "Transport",
     description: "Chauffeur & family transfers",
-    icon: "🚌",
+    icon: <Car className="w-5 h-5 text-brand-brown" />,
     href: null, // opens modal
   },
   {
     label: "Custom Trip",
     description: "Flights, hotels & full planning",
-    icon: "✈️",
+    icon: <Plane className="w-5 h-5 text-brand-brown" />,
     href: "/voyage-sur-mesure",
   },
 ];
@@ -71,65 +72,67 @@ export default function Header({ onServiceModal }: { onServiceModal?: (service: 
           <Link href="/" className="hover:text-brand-brown transition-colors">Home</Link>
 
           {/* Our Services dropdown */}
-          <div
-            ref={dropdownRef}
-            className="relative"
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
-          >
-            <button
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-1 hover:text-brand-brown transition-colors"
-            >
-              Our Services
-              <svg
-                className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
-                viewBox="0 0 12 12" fill="none"
-              >
-                <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+<div
+  ref={dropdownRef}
+  className="relative"
+  onMouseEnter={() => setDropdownOpen(true)}
+  onMouseLeave={() => setDropdownOpen(false)}
+>
+  <button
+    className="flex items-center gap-1 hover:text-brand-brown transition-colors"
+  >
+    Our Services
+    <svg
+      className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+      viewBox="0 0 12 12" fill="none"
+    >
+      <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  </button>
 
-            {/* Dropdown panel */}
-            {dropdownOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[420px] bg-white rounded-2xl shadow-xl border border-gray-100 p-3 grid grid-cols-2 gap-2">
-                {/* little arrow */}
-                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-gray-100 rotate-45" />
-                {SERVICES.map((s) =>
-                  s.href ? (
-                    <Link
-                      key={s.label}
-                      href={s.href}
-                      onClick={() => setDropdownOpen(false)}
-                      className="flex items-start gap-3 p-3 rounded-xl hover:bg-brand-beige transition-colors group"
-                    >
-                      <span className="text-2xl mt-0.5">{s.icon}</span>
-                      <div>
-                        <p className="font-semibold text-brand-text group-hover:text-brand-brown transition-colors text-sm">
-                          {s.label}
-                        </p>
-                        <p className="text-xs text-brand-secondary mt-0.5">{s.description}</p>
-                      </div>
-                    </Link>
-                  ) : (
-                    <button
-                      key={s.label}
-                      onClick={() => handleServiceClick(s)}
-                      className="flex items-start gap-3 p-3 rounded-xl hover:bg-brand-beige transition-colors group text-left w-full"
-                    >
-                      <span className="text-2xl mt-0.5">{s.icon}</span>
-                      <div>
-                        <p className="font-semibold text-brand-text group-hover:text-brand-brown transition-colors text-sm">
-                          {s.label}
-                        </p>
-                        <p className="text-xs text-brand-secondary mt-0.5">{s.description}</p>
-                      </div>
-                    </button>
-                  )
-                )}
-              </div>
-            )}
-          </div>
+  {/* invisible bridge to prevent gap closing */}
+  {dropdownOpen && (
+    <div className="absolute top-full left-0 right-0 h-3" />
+  )}
+
+  {dropdownOpen && (
+    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[420px] bg-white rounded-2xl shadow-xl border border-gray-100 p-3 grid grid-cols-2 gap-2">
+      <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-gray-100 rotate-45" />
+      {SERVICES.map((s) =>
+        s.href ? (
+          <Link
+            key={s.label}
+            href={s.href}
+            onClick={() => setDropdownOpen(false)}
+            className="flex items-start gap-3 p-3 rounded-xl hover:bg-brand-beige transition-colors group"
+          >
+            <span className="text-2xl mt-0.5">{s.icon}</span>
+            <div>
+              <p className="font-semibold text-brand-text group-hover:text-brand-brown transition-colors text-sm">
+                {s.label}
+              </p>
+              <p className="text-xs text-brand-secondary mt-0.5">{s.description}</p>
+            </div>
+          </Link>
+        ) : (
+          <button
+            key={s.label}
+            onClick={() => handleServiceClick(s)}
+            className="flex items-start gap-3 p-3 rounded-xl hover:bg-brand-beige transition-colors group text-left w-full"
+          >
+            <span className="text-2xl mt-0.5">{s.icon}</span>
+            <div>
+              <p className="font-semibold text-brand-text group-hover:text-brand-brown transition-colors text-sm">
+                {s.label}
+              </p>
+              <p className="text-xs text-brand-secondary mt-0.5">{s.description}</p>
+            </div>
+          </button>
+        )
+      )}
+    </div>
+  )}
+</div>
 
           <Link href="/about" className="hover:text-brand-brown transition-colors">About</Link>
           <Link href="/contact" className="hover:text-brand-brown transition-colors">Contact</Link>

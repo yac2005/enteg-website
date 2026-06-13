@@ -95,7 +95,7 @@ export default function Home() {
       </section>
 
       {/* Stats bar */}
-      <section className="bg-brand-brown text-white py-6 px-4">
+      <section className="bg-[#1C1C1C] text-white py-6 px-4"> 
         <div ref={statsRef} className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div><p className="text-2xl font-bold font-heading">{toursCount}+</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Tours</p></div>
           <div><p className="text-2xl font-bold font-heading">{hotelsCount}+</p><p className="text-xs opacity-75 uppercase tracking-wide mt-1">Hotels</p></div>
