@@ -157,7 +157,7 @@ export default function HotelsPage() {
       </section>
 
       {modalSubject && (
-      <InquiryModal subject={modalSubject} onClose={() => setModalSubject("")} />
+        <InquiryModal subject={modalSubject} onClose={() => setModalSubject(null)} />
       )}
     </>
   );

@@ -263,7 +263,7 @@ export default function HotelPage() {
 
       {modalOpen && (
         <InquiryModal
-          tourName={hotel.name}
+          subject={`Inquiry — ${hotel.name}`}
           onClose={() => setModalOpen(false)}
         />
       )}

@@ -339,10 +339,10 @@ export default function TourPage() {
 
       {/* ── INQUIRY MODAL ────────────────────────────────────────── */}
       {modalOpen && (
-        <InquiryModal
-          tourName={tour.name}
-          onClose={() => setModalOpen(false)}
-        />
+                <InquiryModal
+                  subject={`Inquiry — ${tour.name}`}
+                  onClose={() => setModalOpen(false)}
+                />
       )}
     </>
   );

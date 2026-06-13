@@ -138,7 +138,7 @@ export default function ToursPage() {
       </section>
 
       {modalSubject && (
-        <InquiryModal subject={modalSubject} onClose={() => setModalSubject("")} />
+        <InquiryModal subject={modalSubject} onClose={() => setModalSubject(null)} />
       )}
     </>
   );
