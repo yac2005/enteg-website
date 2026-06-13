@@ -4,6 +4,17 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import InquiryModal from "@/components/InquiryModal";
 import { getTours, Tour } from "@/lib/data";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tours",
+  description:
+    "Explore our Sahara desert tours, cultural circuits, and adventure trips across Algeria. All tours are designed and led by local Algerian guides.",
+  openGraph: {
+    title: "Sahara Tours & Circuits — ENTEG Voyages",
+    images: [{ url: "/hero.jpg" }],
+  },
+};
 
 const CATEGORIES = ["All", "Adventure", "Cultural", "Nature"];
 const REGIONS = ["All", "Ghardaïa", "Timimoun", "Béchar", "Djanet", "El Goléa", "Tamanrasset"];

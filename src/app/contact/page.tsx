@@ -3,6 +3,14 @@
 import { useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import type { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch with ENTEG Voyages. Call, WhatsApp, or email us to plan your perfect trip to Algeria.",
+};
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });

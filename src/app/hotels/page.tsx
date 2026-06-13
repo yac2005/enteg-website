@@ -4,6 +4,18 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import InquiryModal from "@/components/InquiryModal";
 import { getHotels, Hotel } from "@/lib/data";
+import type { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "Hotels & Accommodation",
+  description:
+    "Discover handpicked hotels and guesthouses across Algeria, selected and recommended by ENTEG Voyages.",
+  openGraph: {
+    title: "Hotels & Accommodation — ENTEG Voyages",
+    images: [{ url: "/hero.jpg" }],
+  },
+};
 
 const CATEGORIES = ["All", "Hotel", "Auberge", "Gîte", "Camping"];
 const REGIONS = ["All", "Ghardaïa", "Béchar", "Djanet", "Timimoun", "Tamanrasset", "El Goléa"];

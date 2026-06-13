@@ -2,6 +2,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { getCountFromServer, collection } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn about ENTEG Voyages — a Ghardaïa-based travel agency with over 10 years of experience guiding travellers through the Algerian Sahara.",
+  openGraph: {
+    title: "About ENTEG Voyages",
+    description: "A Ghardaïa-based travel agency passionate about the Algerian Sahara.",
+    images: [{ url: "/about.jpg" }],
+  },
+};
 
 const TEAM = [
   {
